@@ -56,7 +56,7 @@ class PlaylistsController extends AbstractController {
      * @return Response
      */
     public function index(): Response{
-        $playlists = $this->playlistRepository->findAllOrderBy('name', 'ASC');
+        $playlists = $this->playlistRepository->findAllOrderByName('ASC');
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::PAGESPLAYLISTS, [
             'playlists' => $playlists,
@@ -70,15 +70,24 @@ class PlaylistsController extends AbstractController {
      * @param type $ordre
      * @return Response
      */
-    public function sort($champ, $ordre): Response{
-        $playlists = $this->playlistRepository->findAllOrderBy($champ, $ordre);
+    public function sort($champ, $ordre): Response {
+        switch ($champ){
+            case "name":
+                $playlists = $this->playlistRepository->findAllOrderByName($ordre);
+                break;
+            case "nbformations":
+                $playlists = $this->playlistRepository->findAllOrderByNbFormations($ordre);
+                break;  
+        }
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::PAGESPLAYLISTS, [
             'playlists' => $playlists,
             'categories' => $categories            
         ]);
-    }         
-    
+        
+    }
+
+
     /**
      * @Route("/playlists/recherche/{champ}/{table}", name="playlists.findallcontain")
      * @param type $champ

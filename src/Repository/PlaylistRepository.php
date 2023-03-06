@@ -52,23 +52,31 @@ class PlaylistRepository extends ServiceEntityRepository
         }
     }
     
+  
     /**
-     * Retourne toutes les playlists triées sur un champ
+     * Retourne toutes les playlists triées sur le nom de la playlist
      * @param type $champ
      * @param type $ordre
      * @return Playlist[]
      */
-    public function findAllOrderBy($champ, $ordre): array{
+    public function findAllOrderByName($ordre): array{
         return $this->createQueryBuilder('p')
-                ->select(self::PIDID)
-                ->addSelect(self::PNAME)
-                ->addSelect(self::CATEGORIENAME)
                 ->leftjoin('p.formations', 'f')
-                ->leftjoin('f.categories', 'c')
                 ->groupBy('p.id')
-                ->addGroupBy('c.name')
-                ->orderBy('p.'.$champ, $ordre)
-                ->addOrderBy('c.name')
+                ->orderBy('p.name', $ordre)
+                ->getQuery()
+                ->getResult();       
+    }
+    /**
+     * Retourne toutes les playlists triées sur le nombre de formations
+     * @param type $ordre
+     * @return Playlist[]
+     */
+    public function findAllOrderByNbFormations($ordre): array{
+        return $this->createQueryBuilder('p')
+                ->leftjoin('p.formations', 'f')
+                ->groupBy('p.id')
+                ->orderBy('count(f.title)', $ordre)
                 ->getQuery()
                 ->getResult();       
     }
@@ -83,13 +91,12 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findByContainValue($champ, $valeur, $table=""): array{
         if($valeur==""){
-            return $this->findAllOrderBy('name', 'ASC');
+            return $this->findAllOrderByName('ASC');
         }    
         if($table==""){      
             $this->findByValIfTableIsEmptyy($champ, $valeur);          
         }else{   
-            $this->findByValIfTableIsNotEmptyy($champ, $valeur);        
-            
+            $this->findByValIfTableIsNotEmptyy($champ, $valeur);           
         } 
         return array();
     }
@@ -101,17 +108,11 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findByValIfTableIsEmptyy($champ, $valeur):array {
         return $this->createQueryBuilder('p')
-                    ->select(self::PIDID)
-                    ->addSelect(self::PNAME)
-                    ->addSelect(self::CATEGORIENAME)
                     ->leftjoin('p.formations', 'f')
-                    ->leftjoin('f.categories', 'c')
                     ->where('p.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
                     ->groupBy('p.id')
-                    ->addGroupBy('c.name')
                     ->orderBy('p.name', 'ASC')
-                    ->addOrderBy('c.name')
                     ->getQuery()
                     ->getResult(); 
         
@@ -124,23 +125,14 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findByValIfTableIsNotEmptyy($champ, $valeur):array {
          return $this->createQueryBuilder('p')
-                    ->select(self::PIDID)
-                    ->addSelect(self::PNAME)
-                    ->addSelect(self::CATEGORIENAME)
                     ->leftjoin('p.formations', 'f')
                     ->leftjoin('f.categories', 'c')
                     ->where('c.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
                     ->groupBy('p.id')
-                    ->addGroupBy('c.name')
                     ->orderBy('p.name', 'ASC')
-                    ->addOrderBy('c.name')
                     ->getQuery()
                     ->getResult(); 
         
     }
-    
-
-
-    
 }
