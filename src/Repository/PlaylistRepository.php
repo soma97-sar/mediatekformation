@@ -16,9 +16,23 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PlaylistRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * p.id id
+     */
+    private const PIDID = 'p.id id';
+    /**
+     * p.name name
+     */
+    private const PNAME = 'p.name name';
+    /**
+     * c.name categoriename
+     */
+    private const CATEGORIENAME = 'c.name categoriename';
+    
+
+    public function __Construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Playlist::class);
+        parent::__Construct($registry, Playlist::class);
     }
 
     public function add(Playlist $entity, bool $flush = false): void
@@ -33,7 +47,6 @@ class PlaylistRepository extends ServiceEntityRepository
     public function remove(Playlist $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }
@@ -47,9 +60,9 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findAllOrderBy($champ, $ordre): array{
         return $this->createQueryBuilder('p')
-                ->select('p.id id')
-                ->addSelect('p.name name')
-                ->addSelect('c.name categoriename')
+                ->select(self::PIDID)
+                ->addSelect(self::PNAME)
+                ->addSelect(self::CATEGORIENAME)
                 ->leftjoin('p.formations', 'f')
                 ->leftjoin('f.categories', 'c')
                 ->groupBy('p.id')
@@ -73,10 +86,24 @@ class PlaylistRepository extends ServiceEntityRepository
             return $this->findAllOrderBy('name', 'ASC');
         }    
         if($table==""){      
-            return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
+            $this->findByValIfTableIsEmptyy($champ, $valeur);          
+        }else{   
+            $this->findByValIfTableIsNotEmptyy($champ, $valeur);        
+            
+        } 
+        return array();
+    }
+    /**
+     * 
+     * @param type $champ
+     * @param type $valeur
+     * @return Playlist[]
+     */
+    public function findByValIfTableIsEmptyy($champ, $valeur):array {
+        return $this->createQueryBuilder('p')
+                    ->select(self::PIDID)
+                    ->addSelect(self::PNAME)
+                    ->addSelect(self::CATEGORIENAME)
                     ->leftjoin('p.formations', 'f')
                     ->leftjoin('f.categories', 'c')
                     ->where('p.'.$champ.' LIKE :valeur')
@@ -86,12 +113,20 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->orderBy('p.name', 'ASC')
                     ->addOrderBy('c.name')
                     ->getQuery()
-                    ->getResult();              
-        }else{   
-            return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
+                    ->getResult(); 
+        
+    }
+    /**
+     * 
+     * @param type $champ
+     * @param type $valeur
+     * @return Playlist[]
+     */
+    public function findByValIfTableIsNotEmptyy($champ, $valeur):array {
+         return $this->createQueryBuilder('p')
+                    ->select(self::PIDID)
+                    ->addSelect(self::PNAME)
+                    ->addSelect(self::CATEGORIENAME)
                     ->leftjoin('p.formations', 'f')
                     ->leftjoin('f.categories', 'c')
                     ->where('c.'.$champ.' LIKE :valeur')
@@ -101,10 +136,10 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->orderBy('p.name', 'ASC')
                     ->addOrderBy('c.name')
                     ->getQuery()
-                    ->getResult();              
-            
-        }           
-    }    
+                    ->getResult(); 
+        
+    }
+    
 
 
     

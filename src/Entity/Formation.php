@@ -16,7 +16,7 @@ class Formation
     /**
      * Début de chemin vers les images
      */
-    private const cheminImage = "https://i.ytimg.com/vi/";
+    private const CHEMININMAGE = "https://i.ytimg.com/vi/";
     
     /**
      * @ORM\Id
@@ -55,7 +55,7 @@ class Formation
      */
     private $categories;
 
-    public function __construct()
+    public function __Construct()
     {
         $this->categories = new ArrayCollection();
     }
@@ -110,12 +110,12 @@ class Formation
 
     public function getMiniature(): ?string
     {
-        return self::cheminImage.$this->videoId."/default.jpg";
+        return self::CHEMININMAGE.$this->videoId."/default.jpg";
     }
 
     public function getPicture(): ?string
     {
-        return self::cheminImage.$this->videoId."/hqdefault.jpg";
+        return self::CHEMININMAGE.$this->videoId."/hqdefault.jpg";
     }
 
     public function getVideoId(): ?string

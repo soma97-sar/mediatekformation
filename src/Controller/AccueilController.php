@@ -12,7 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author emds
  */
 class AccueilController extends AbstractController{
-      
+    /**
+     * le chemin vers pages/accueil
+     */
+    private const PAGEACCUEIL = "pages/accueil.html.twig";
+
+
+
     /**
      * @var FormationRepository
      */
@@ -22,17 +28,16 @@ class AccueilController extends AbstractController{
      * 
      * @param FormationRepository $repository
      */
-    public function __construct(FormationRepository $repository) {
+    public function __Construct(FormationRepository $repository){
         $this->repository = $repository;
     }   
-    
     /**
      * @Route("/", name="accueil")
      * @return Response
      */
     public function index(): Response{
         $formations = $this->repository->findAllLasted(2);
-        return $this->render("pages/accueil.html.twig", [
+        return $this->render(self::PAGEACCUEIL, [
             'formations' => $formations
         ]); 
     }

@@ -29,7 +29,7 @@ class Categorie
      */
     private $formations;
 
-    public function __construct()
+    public function __Construct()
     {
         $this->formations = new ArrayCollection();
     }

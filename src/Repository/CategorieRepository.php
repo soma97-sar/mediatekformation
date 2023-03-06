@@ -16,9 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategorieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __Construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Categorie::class);
+        parent::__Construct($registry, Categorie::class);
     }
 
     public function add(Categorie $entity, bool $flush = false): void

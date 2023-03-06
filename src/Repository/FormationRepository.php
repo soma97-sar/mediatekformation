@@ -16,9 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FormationRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __Construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Formation::class);
+        parent::__Construct($registry, Formation::class);
     }
 
     public function add(Formation $entity, bool $flush = false): void
@@ -48,17 +48,39 @@ class FormationRepository extends ServiceEntityRepository
      */
     public function findAllOrderBy($champ, $ordre, $table=""): array{
         if($table==""){
-            return $this->createQueryBuilder('f')
+            $this->findAllOrderByIfTableISEMpt($champ, $ordre);
+        }else{
+            $this->findAllOrderByIfTableISNotEmpt($champ, $ordre, $table);        
+        }
+        return array();
+    }
+    /**
+     * 
+     * @param type $champ
+     * @param type $ordre
+     * @return Formation[]
+     */
+    public function findAllOrderByIfTableISEMpt($champ, $ordre): array {
+        return $this->createQueryBuilder('f')
                     ->orderBy('f.'.$champ, $ordre)
                     ->getQuery()
                     ->getResult();
-        }else{
-            return $this->createQueryBuilder('f')
+        
+    }
+    /**
+     * 
+     * @param type $champ
+     * @param type $ordre
+     * @param type $table
+     * @return Formation[]
+     */
+    public function findAllOrderByIfTableISNotEmpt($champ, $ordre, $table):array {
+        return $this->createQueryBuilder('f')
                     ->join('f.'.$table, 't')
                     ->orderBy('t.'.$champ, $ordre)
                     ->getQuery()
-                    ->getResult();            
-        }
+                    ->getResult();
+        
     }
 
     /**
@@ -74,23 +96,45 @@ class FormationRepository extends ServiceEntityRepository
             return $this->findAll();
         }
         if($table==""){
-            return $this->createQueryBuilder('f')
+            $this->findByValIfTableISEmpty($champ, $valeur);          
+        }else{
+            $this->findByValIfTableNotEmpty($table, $champ, $valeur);        
+        }   
+        return array();
+    }
+    /**
+     * 
+     * @param type $champ
+     * @param type $valeur
+     * @return Formation[]
+     */
+    public function findByValIfTableISEmpty($champ,$valeur): array {
+        return $this->createQueryBuilder('f')
                     ->where('f.'.$champ.' LIKE :valeur')
                     ->orderBy('f.publishedAt', 'DESC')
                     ->setParameter('valeur', '%'.$valeur.'%')
                     ->getQuery()
-                    ->getResult();            
-        }else{
-            return $this->createQueryBuilder('f')
+                    ->getResult();     
+        
+    }
+    /**
+     * 
+     * @param type $table
+     * @param type $champ
+     * @param type $valeur
+     * @return Formation[]
+     */
+    public function findByValIfTableNotEmpty($table,$champ,$valeur):array{
+        return $this->createQueryBuilder('f')
                     ->join('f.'.$table, 't')                    
                     ->where('t.'.$champ.' LIKE :valeur')
                     ->orderBy('f.publishedAt', 'DESC')
                     ->setParameter('valeur', '%'.$valeur.'%')
                     ->getQuery()
-                    ->getResult();                   
-        }       
-    }    
-    
+                    ->getResult(); 
+        
+    }
+
     /**
      * Retourne les n formations les plus récentes
      * @param type $nb
