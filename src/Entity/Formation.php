@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Formation
 {
+   
     /**
      * Début de chemin vers les images
      */
@@ -34,7 +35,7 @@ class Formation
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $title;
-
+   
     /**
      * @ORM\Column(type="text", nullable=true)
      */
@@ -68,6 +69,8 @@ class Formation
     public function getPublishedAt(): ?DateTimeInterface
     {
         return $this->publishedAt;
+                
+       
     }
 
     public function setPublishedAt(?DateTimeInterface $publishedAt): self

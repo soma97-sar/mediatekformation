@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Controleur de l'accueil
  *
- * @author emds
+ * @author  soumia
  */
 class AccueilController extends AbstractController{
     /**

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Controleur des formations
  *
- * @author emds
+ * @author  soumia
  */
 class FormationsController extends AbstractController {
     /**
