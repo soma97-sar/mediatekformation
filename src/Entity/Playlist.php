@@ -19,15 +19,15 @@ class Playlist
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $name;
     public function __toString(): string {
         return $this->name;
         
     }
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $name;
+  
     /**
      * @ORM\Column(type="text", nullable=true)
      */
@@ -85,6 +85,7 @@ class Playlist
         if (!$this->formations->contains($formation)) {
             $this->formations[] = $formation;
             $formation->setPlaylist($this);
+            
         }
 
         return $this;

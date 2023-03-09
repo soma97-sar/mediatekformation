@@ -12,6 +12,7 @@ use App\Entity\Playlist;
 use App\Form\FormationType;
 use App\Repository\CategorieRepository;
 use App\Repository\FormationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -31,8 +32,11 @@ class AdminFormationsController extends AbstractController{
      * @var FormationRepository
      */
     private $formationRepository;
-    
-    function __Construct(FormationRepository $formationRepository) {
+    /**
+     * 
+     * @param FormationRepository $formationRepository
+     */
+    public function __Construct(FormationRepository $formationRepository) {
         $this->formationRepository = $formationRepository;
         
     }
@@ -59,6 +63,7 @@ class AdminFormationsController extends AbstractController{
     /**
      * @Route("/admin/edit/{id}", name="admin.formation.edit")
      * @param Formation $formation
+     * @param Request $request
      * @return Response
      */
     public function edit(Formation $formation, Request $request):Response{
@@ -80,21 +85,30 @@ class AdminFormationsController extends AbstractController{
      * @param Request $request
      * @return Response
      */
-    public function ajout(Request $request):Response{
+    public function ajout(Request $request, EntityManagerInterface $entityManager):Response{
         $formation= new Formation();
         $formFormation = $this->createForm(FormationType::class, $formation);
         $formFormation->handleRequest($request);
         if($formFormation->isSubmitted()&& $formFormation->isValid()){
+            $em= $this->getDoctrine()->getManager();
+            $em->persist($formation);
+            $em->flush();
             $this->formationRepository->add($formation, true);
+            //return new Response('formation bien ajoutée!');
             return $this->redirectToRoute('admin.formations');
+
                
         }
         return $this->render("admin/admin.formation.ajout.html.twig",[
             'formation' => $formation,
             'formformation' => $formFormation->createView()
         ]);
+      
+        
+        
+       
              
     }
     
-    
+
 }

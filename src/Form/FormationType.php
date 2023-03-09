@@ -5,13 +5,14 @@ namespace App\Form;
 use App\Entity\Formation;
 use App\Entity\Playlist;
 use DateTimeInterface;
+use App\Form\PlaylistType;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\PlaylistType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -26,14 +27,12 @@ class FormationType extends AbstractType
             ->add('publishedAt', DateTimeType::class,[
                 'widget'=>'single_text',
                 'data'=> isset($options['data'])&&
-                    $options['data']->getPublishedAt() !=null ? $options['data']->getPublishedAt() :new dateTime('now'),
+                    $options['data']->getPublishedAt() !=null ? $options['data']->getPublishedAt() :new \DateTime(),
             ])
             ->add('title')
             ->add('description',null)
             ->add('videoId')
-            ->add('playlist', FormType::class,[
-                'action'=> Playlist::class
-            ])
+            ->add('playlist',null) 
             ->add('categories',null)
             ->add('submit', SubmitType::class, [
                 'label'=>'Enregistrer'
@@ -47,4 +46,5 @@ class FormationType extends AbstractType
             'data_class' => Formation::class,
         ]);
     }
+    
 }

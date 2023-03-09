@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Formation;
 use App\Entity\Playlist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -51,6 +52,32 @@ class PlaylistRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    
+    // un code de vérification si la formation n'existe pas dans une autre playlist si se pose un problème...
+    /// TODO : Créee deux méthodes
+    // 1 - retourné un PlayList par Id
+    // 2 - Ajouter Formation à la playList retournée.
+    
+    //Et après ajouter delete Formation in PlayList 
+    /**
+     * 
+     * @return Formations[]
+     */ 
+    public function getFormationsPlaylist():Collection {
+        $formations= new ArrayCollection();
+        foreach ($this->playlists as $playlist){
+            $formationPlaylist= $playlist->getFormation();
+            foreach ($formationPlaylist as $formationPlaylist){
+                if(!$formations->contains($formationPlaylist->getId())){
+                    $formations[] = $formationPlaylist->getId();
+                }
+            }    
+                
+        }
+        return $formations;
+        
+    }
+    
     
   
     /**
@@ -134,4 +161,5 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->getResult(); 
         
     }
+    
 }
