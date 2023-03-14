@@ -41,7 +41,7 @@ class AdminFormationsController extends AbstractController{
         
     }
     /**
-     * @Route("/admin", name="admin.formations")
+     * @Route("/admin/formations", name="admin.formations")
      * @return Response
      */
     public function index(): Response{
@@ -52,7 +52,7 @@ class AdminFormationsController extends AbstractController{
         ]);
     }
     /**
-     * @Route("/admin/delete/{id}", name="admin.formation.delete")
+     * @Route("/admin/formation/delete/{id}", name="admin.formation.delete")
      * @param Formation $formation
      * @return Response
      */
@@ -61,7 +61,7 @@ class AdminFormationsController extends AbstractController{
         return $this->redirectToRoute('admin.formations');
     }
     /**
-     * @Route("/admin/edit/{id}", name="admin.formation.edit")
+     * @Route("/admin/formation/edit/{id}", name="admin.formation.edit")
      * @param Formation $formation
      * @param Request $request
      * @return Response
@@ -81,7 +81,7 @@ class AdminFormationsController extends AbstractController{
              
     }
     /**
-     * @Route("/admin/ajout", name="admin.formation.ajout")
+     * @Route("/admin/formation/ajout", name="admin.formation.ajout")
      * @param Request $request
      * @return Response
      */
@@ -94,21 +94,11 @@ class AdminFormationsController extends AbstractController{
             $em->persist($formation);
             $em->flush();
             $this->formationRepository->add($formation, true);
-            //return new Response('formation bien ajoutée!');
             return $this->redirectToRoute('admin.formations');
-
-               
         }
-        return $this->render("admin/admin.formation.ajout.html.twig",[
+       return $this->render("admin/admin.formation.ajout.html.twig",[
             'formation' => $formation,
             'formformation' => $formFormation->createView()
         ]);
-      
-        
-        
-       
-             
     }
-    
-
 }

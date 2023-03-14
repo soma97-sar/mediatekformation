@@ -44,7 +44,6 @@ class PlaylistRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
     public function remove(Playlist $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -52,17 +51,13 @@ class PlaylistRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    
-    // un code de vérification si la formation n'existe pas dans une autre playlist si se pose un problème...
-    /// TODO : Créee deux méthodes
-    // 1 - retourné un PlayList par Id
-    // 2 - Ajouter Formation à la playList retournée.
-    
-    //Et après ajouter delete Formation in PlayList 
     /**
      * 
      * @return Formations[]
      */ 
+    //We will use this one
+    //ok:
+    
     public function getFormationsPlaylist():Collection {
         $formations= new ArrayCollection();
         foreach ($this->playlists as $playlist){

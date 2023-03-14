@@ -2,10 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Categorie;
 use App\Entity\Formation;
 use App\Entity\Playlist;
-use DateTimeInterface;
 use App\Form\PlaylistType;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -33,7 +34,12 @@ class FormationType extends AbstractType
             ->add('description',null)
             ->add('videoId')
             ->add('playlist',null) 
-            ->add('categories',null)
+            ->add('categories',EntityType::class, [
+                'class' => Categorie::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'required' => false
+            ])
             ->add('submit', SubmitType::class, [
                 'label'=>'Enregistrer'
             ])    
