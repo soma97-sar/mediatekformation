@@ -68,17 +68,22 @@ class AdminCategorieController extends AbstractController{
     /**
      * @Route("/admin/categorie/ajout", name="admin.categorie.ajout")
      * @param Request $request
+     * @param EntityManagerInterface $em 
      * @return Response
      */
-    public function ajout(Request $request):Response {
-        $em=$this->getDoctrine()->getManager();          
-        $nameCategorie = $request->request->get("name");
-        $categorie = new Categorie();
-        //$categorie->getName($nameCategorie);
-        $categorie->setName($nameCategorie);
-        $em->persist($categorie);
-        $em->flush();
-        $this->categorieRepository->add($categorie, true);
-        return $this->redirectToRoute('admin.categories');       
+    public function ajout(Request $request, EntityManagerInterface $em):Response {        
+        $nameCategorie = $request->query->get('name');
+        $existCategorie= $em->getRepository(Categorie::class)->findOneBy(['name'=>$nameCategorie]);
+        if($existCategorie){
+            return new Response('cette categorie existe deja!!');
+        }
+        else{
+            $categorie = new Categorie();
+            $categorie->setName($nameCategorie);
+            $em->persist($categorie);
+            $em->flush();
+            $this->categorieRepository->add($categorie, true);
+            return $this->redirectToRoute('admin.categories');   
+        }     
     }  
 }
