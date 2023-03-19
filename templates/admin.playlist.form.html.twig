@@ -1,0 +1,17 @@
+{% extends "baseadmin.html.twig" %}
+{% block body %}
+    <h2>Detail playlist</h2>
+    {{ form_start(formplaylist) }}
+        <div class="row">
+            <div class="col">
+                <div class="row">           
+                    {{ form_row(formplaylist.name) }}
+                </div>  
+                <div class="col">
+                    {{ form_row(formplaylist.description) }}
+                </div>
+            </div>
+        </div>        
+                    
+    {{ form_end(formplaylist) }}
+{% endblock %}    

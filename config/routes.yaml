@@ -1,0 +1,10 @@
+ #index:
+   # path: /
+  #  controller: App\Controller\DefaultController::index
+ #Admin_formations:
+  #  path: /admin/formations
+   # controller: App\Controller\admin\AdminFormationsController::index
+ #Admin_playlists:
+  #  path: /admin/playlists
+   #controller: App\Controller\admin\AdminPlaylistsController::index
+    

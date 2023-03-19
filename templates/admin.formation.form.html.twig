@@ -1,0 +1,40 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+    <h2>Detail formation</h2>
+    {{ form_start(formformation) }}
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-auto">
+                        {{ form_row(formformation.publishedAt)}}
+                    </div>
+                   
+                     <div class="col">
+                        {{ form_row(formformation.videoId) }}
+                    </div> 
+                    
+                    <div class="col">
+                        {{ form_row(formformation.playlist) }}
+                    </div>
+                     <div class="col">
+                        {{ form_row(formformation.categories) }}
+                    </div>
+                </div>
+                <div>
+                    {{ form_row(formformation.title) }}
+                </div>  
+                <div class="col">
+                    <!--emplacement video-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(formformation.description) }}
+                </div>
+            </div>
+        </div>        
+                    
+    {{ form_end(formformation) }}
+{% endblock %}    
+
