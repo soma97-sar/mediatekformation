@@ -107,8 +107,9 @@ class AdminPlaylistController extends AbstractController {
      public function suppr(Playlist $playlist):Response{         
          $formations= $playlist->getFormations();
          if(Count($formations)>0){
-             //$this->addFlash('erreur', 'impossible de supprimer cette playlist elle est ratachée a une formation ou plus!!');
-             throw $this->createNotFoundException('impossible de supprimer cette playlist car elle est rattachée à une formation ou plus!!');
+             return $this->render("erreur.html.twig",[
+            'erreur' => 'impossible de supprimer cette playlist car elle est ratachée a une formation ou plus!!'
+        ]);
          }
          $entityManager= $this->getDoctrine()->getManager();
          $entityManager->remove($playlist);

@@ -55,8 +55,9 @@ class AdminCategorieController extends AbstractController{
         $em= $this->getDoctrine()->getManager();
         $formations= $categorie->getFormations();
          if(Count($formations)>0){
-             $this->addFlash('erreur', 'impossible de supprimer cette categorie elle est ratachée a une formation ou plus!!');
-            // throw $this->createNotFoundException('impossible de supprimer cette categorie car elle contient une formation ou plus!!');
+             return $this->render("erreur.html.twig",[
+            'erreur' => 'impossible de supprimer cette categorie car elle est ratachée a une formation ou plus!!'
+        ]);
          }
          else{
              $em->remove($categorie);
@@ -72,10 +73,10 @@ class AdminCategorieController extends AbstractController{
      * @return Response
      */
     public function ajout(Request $request, EntityManagerInterface $em):Response {        
-        $nameCategorie = $request->query->get('name');
+        $nameCategorie = $request->request->get('name');
         $existCategorie= $em->getRepository(Categorie::class)->findOneBy(['name'=>$nameCategorie]);
         if($existCategorie){
-            return new Response('cette categorie existe deja!!');
+            return new Response('cette catégorie existe déjà !!');
         }
         else{
             $categorie = new Categorie();
