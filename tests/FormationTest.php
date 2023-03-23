@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Description of FormationTest
  *
- * @author BEN BAHA
+ * @author soumia
  */
 class FormationTest extends TestCase{
     public function testgetPublishedAtString() {
