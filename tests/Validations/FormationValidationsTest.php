@@ -5,7 +5,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
 
-namespace App\Tests\Validations;
+namespace App\tests\Validations;
 
 use App\Entity\Formation;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

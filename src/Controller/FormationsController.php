@@ -17,7 +17,7 @@ class FormationsController extends AbstractController {
     /**
      * chemin vers pages/formations
      */
-    private const PAGESFORMATIONS = "pages/formations.html.twig";
+    const PAGESFORMATIONS = "pages/formations.html.twig";
 
     /**
      * 
